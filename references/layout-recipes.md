@@ -83,6 +83,9 @@ Never reduce readable labels below 16 px. Simplify text or increase the canvas i
 - Put domain, orchestration, policy, or core modules in the center.
 - Put adapters, clients, storage, queues, and external integrations at the edge.
 - Keep package or repository boundaries as light group boxes with clear labels.
+- Use one size for peer components, usually `240 x 96` or `260 x 112`.
+- Route dependencies layer-to-layer; avoid dependency lines that cross package headers.
+- Put cross-cutting modules in a narrow side column only when they are used by many layers.
 
 ## Deployment Recipe
 
@@ -90,13 +93,20 @@ Never reduce readable labels below 16 px. Simplify text or increase the canvas i
 - Use entry points on the left/top boundary, workloads in the center, backing services on the right/bottom.
 - Keep infrastructure boundary labels outside the workload cards.
 - Use dashed outlines for optional, standby, or disaster recovery environments only when explicit.
+- Use large boundary padding of at least 32 px between nested scopes.
+- Keep public entry points on the outer boundary and private workloads inside the network or cluster boundary.
+- Put managed services in a separate backing-services column or bottom band.
 
 ## Data Flow Recipe
 
-- Use columns: sources, ingestion, processing, storage, serving, consumers.
-- Use parallel rows for batch and streaming flows.
-- Put topic/table/file names on edges only if labels remain readable.
-- Use storage-shaped cards consistently for queues, tables, buckets, warehouses, and caches.
+- Use columns: sources, ingestion, quality gates, processing, storage maturity, semantic/serving, consumers.
+- Use storage maturity stages when applicable: raw landing, staged/clean, curated warehouse, metric marts, semantic layer.
+- Use parallel rows for streaming and batch flows; use a slim lower band for orchestration, catalog, lineage, and data quality feedback.
+- Put topic, table, file, or metric names on edges only if labels remain readable.
+- Use storage-shaped cards consistently for queues, object stores, lakes, tables, warehouses, marts, indexes, feature stores, and caches.
+- Show quality checks before trusted storage, not after the dashboard.
+- Place dashboards at the far right and label them by audience or decision, such as executive KPIs, product analytics, finance reporting, or operational monitoring.
+- If the diagram is about "ingestion to warehouse to dashboard", emphasize the handoff from raw ingestion to trusted warehouse tables and then to semantic metrics.
 
 ## General Spacing Rule
 
@@ -111,6 +121,9 @@ Never reduce readable labels below 16 px. Simplify text or increase the canvas i
 - Put exceptions or failure paths to the side, using smaller cards if needed.
 - Use diamonds only for true decisions.
 - Keep branch labels outside the diamond and close to the outgoing edge.
+- Use `220 x 96` stage cards and `180 x 110` decision diamonds as a default scale.
+- Keep exception paths visually thinner or lower contrast than the happy path.
+- Keep terminal states aligned at the end of their path.
 
 ## CI/CD Pipeline Recipe
 
@@ -118,6 +131,9 @@ Never reduce readable labels below 16 px. Simplify text or increase the canvas i
 - Put quality gates and approvals as smaller diamonds or gate cards between stages.
 - Put rollback/failure paths below the main rail and route them to the target environment.
 - Use compact badges for artifacts, images, branches, tags, or environments.
+- Group by responsibility bands such as Source, CI, Artifact, Staging, Production, Verify.
+- Use a lower rollback rail only when rollback or failure handling is explicit.
+- Keep environment cards wider than individual job cards so promotion is visually clear.
 
 ## Swimlane Recipe
 
@@ -125,6 +141,9 @@ Never reduce readable labels below 16 px. Simplify text or increase the canvas i
 - Use lane height of 140 to 180 px.
 - Use alternating lane fills with very low contrast.
 - Place steps by time from left to right; never center all steps if chronology matters.
+- Align handoff arrows to lane midlines where possible.
+- Keep each lane to 3 to 7 visible steps; split dense workflows into phases.
+- Use a top time/phase ruler when there are many handoffs.
 
 ## Sequence Recipe
 
@@ -132,6 +151,9 @@ Never reduce readable labels below 16 px. Simplify text or increase the canvas i
 - Lifelines start under participant headers and end near the last message.
 - Use y-spacing of 72 to 96 px between messages.
 - Use activation bars only if they clarify nested execution.
+- Keep message arrows horizontal; use notes or brackets for optional sections instead of diagonal connectors.
+- Reserve at least 160 px between participant centerlines for readable message labels.
+- Put async/event messages in a subtly different stroke only when the source distinguishes them.
 
 ## State Machine Recipe
 
@@ -140,6 +162,9 @@ Never reduce readable labels below 16 px. Simplify text or increase the canvas i
 - Put terminal success on the right and terminal failure/cancelled below the main path.
 - Use curved connectors for retries and self-loops.
 - Keep every transition labeled unless it is explicitly automatic.
+- Use a main lifecycle row and a lower exception/retry row for business workflows.
+- Keep retry loops small and close to the state they retry.
+- Put manual intervention states in a side cluster when they are not on the main lifecycle.
 
 ## ER Diagram Recipe
 
@@ -148,6 +173,9 @@ Never reduce readable labels below 16 px. Simplify text or increase the canvas i
 - Use 28 to 34 px field rows.
 - Put key fields at the top with compact `PK` and `FK` tags.
 - Use relationship lines from table edges for dense schemas, or from field rows for small schemas.
+- Place central transaction or fact tables near the center, dimensions or lookup tables around them.
+- Keep relationship labels outside table bodies.
+- Use table-edge connectors for schemas with more than 5 relationships.
 
 ## Org Chart Recipe
 
@@ -155,6 +183,9 @@ Never reduce readable labels below 16 px. Simplify text or increase the canvas i
 - Keep every level on one y-coordinate.
 - Use straight or orthogonal connectors.
 - Avoid deep text in people/team cards; keep role details secondary.
+- Use `220 x 88` cards for people and `260 x 96` cards for teams by default.
+- Keep dotted advisory lines outside the main reporting tree.
+- Split very wide teams into grouped subtrees rather than shrinking card text.
 
 ## Timeline Recipe
 
@@ -162,6 +193,9 @@ Never reduce readable labels below 16 px. Simplify text or increase the canvas i
 - Alternate callouts above and below the axis only when markers are close.
 - Use bars for durations, dots for point events.
 - Preserve exact dates and labels; do not normalize vague phase names into fake dates.
+- Use stacked lanes when parallel workstreams matter.
+- Use even phase spacing when the source uses phases instead of exact dates.
+- Keep callouts short and put details in a second line.
 
 ## Mind Map Recipe
 
@@ -169,6 +203,9 @@ Never reduce readable labels below 16 px. Simplify text or increase the canvas i
 - Use short curved or straight connectors from center to branch heads.
 - Keep child nodes within the visual wedge of their branch.
 - Split the map if more than 35 nodes are required.
+- Use larger branch-head nodes than leaf nodes.
+- Use one color per first-level branch and a lighter fill for its children.
+- Keep child levels radially ordered so branches do not interleave.
 
 ## Matrix Recipe
 
@@ -176,9 +213,15 @@ Never reduce readable labels below 16 px. Simplify text or increase the canvas i
 - Keep quadrant titles in the corners.
 - Keep item chips short and avoid overlapping chips.
 - If placement is uncertain, use the center of the relevant quadrant rather than inventing precision.
+- Leave at least 24 px padding inside each quadrant for labels and chips.
+- Put ambiguous items near the axis intersection instead of forcing them into a corner.
+- Use consistent chip size unless item importance is explicitly encoded.
 
 ## Funnel Recipe
 
 - Use stacked bands when exact numbers are unavailable.
 - Use proportional widths only when counts or rates are supplied.
 - Put count/rate text on a second line, not mixed into the stage title.
+- Use a side annotation column for explanations, drop-off reasons, or owners when supplied.
+- Keep each stage height consistent unless counts are explicitly represented by area.
+- Use neutral colors for stages and reserve warning color for an evidenced drop-off.
