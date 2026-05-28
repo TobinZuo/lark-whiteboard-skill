@@ -64,9 +64,9 @@ Expose this skill to other agents as a split workflow:
 
 Keep the model-driven part limited to SVG generation. Keep Lark document creation, SVG conversion, whiteboard update, and preview export in `scripts/publish_svg_to_lark_doc.py`.
 
-## MindAI-Inspired Lessons
+## Generation Workflow Principles
 
-This skill intentionally stays local and transparent, but it should emulate the useful observable behavior of remote diagram generators:
+This skill intentionally stays local, transparent, and portable. Keep the generation workflow explicit:
 
 - Turn vague requests into a structured diagram brief before drawing.
 - Keep the generation artifact resumable: source request, prompt, SVG path, validation result, and publish result should be easy to pass between agents.

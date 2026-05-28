@@ -23,7 +23,7 @@ If you only want SVG generation, `lark-cli` is not required.
 
 - Turns common engineering diagrams into SVG: architecture, component, deployment topology, sequence, flowchart, swimlane, state machine, data flow, ERD, and CI/CD pipeline.
 - Selects a diagram-specific prompt from `references/prompt-library.md` so the layout is intentionally designed instead of generic.
-- Converts vague requests into a structured diagram brief before asking for SVG, inspired by observable MindAI-style task flows.
+- Converts vague requests into a structured diagram brief before asking for SVG.
 - Validates generated SVG with `scripts/validate_svg.py`.
 - Hands the validated SVG to an available Lark or Feishu whiteboard skill or tool.
 - Redacts whiteboard tokens from publish output by default.
@@ -55,7 +55,6 @@ python3 scripts/publish_svg_to_lark_doc.py --svg diagram.svg --title "Example Ar
 ```
 
 For agent integration, see `references/agent-contract.md`.
-For the MindAI-style observations behind the current workflow, see `references/mindai-observable-patterns.md`.
 
 ## Examples
 
