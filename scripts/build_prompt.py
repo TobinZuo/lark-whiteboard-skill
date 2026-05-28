@@ -12,6 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PROMPT_LIBRARY = ROOT / "references" / "prompt-library.md"
 LAYOUT_RECIPES = ROOT / "references" / "layout-recipes.md"
+LAYOUT_ARCHETYPES = ROOT / "references" / "layout-archetypes.md"
 
 SECTION_BY_TYPE = {
     "architecture": "Architecture Prompt",
@@ -64,7 +65,7 @@ RECIPE_BY_SECTION = {
     "Funnel Prompt": "Funnel Recipe",
 }
 
-COMMON_RECIPE_HEADINGS = ["Canvas", "Node Dimensions", "Spacing", "Palette", "Typography"]
+COMMON_RECIPE_HEADINGS = ["Layout Rule", "Canvas", "Node Dimensions", "Spacing", "Palette", "Typography"]
 
 
 def extract_text_block(markdown: str, heading: str) -> str:
@@ -110,6 +111,7 @@ def build_prompt(diagram_type: str, source: str, title: str | None) -> str:
     universal = extract_text_block(library, "Universal SVG Generation Prompt")
     specific = extract_text_block(library, section)
     review = extract_text_block(library, "Final Visual Review Prompt")
+    archetypes = LAYOUT_ARCHETYPES.read_text(encoding="utf-8").strip()
     recipes_source = LAYOUT_RECIPES.read_text(encoding="utf-8")
     recipe_heading = RECIPE_BY_SECTION.get(section)
     recipe_sections = [extract_markdown_section(recipes_source, item) for item in COMMON_RECIPE_HEADINGS]
@@ -124,6 +126,7 @@ def build_prompt(diagram_type: str, source: str, title: str | None) -> str:
         [
             universal,
             specific,
+            "Layout archetypes and placement discipline:\n" + archetypes,
             "Layout recipes and numeric design constraints:\n" + recipes,
             review,
             f"Diagram title:\n{title_text}",

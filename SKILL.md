@@ -24,6 +24,7 @@ This skill owns the SVG generation workflow. It does not own Feishu authenticati
 3. Select the best diagram prompt:
    - Classify the request using [references/prompt-library.md](references/prompt-library.md).
    - Combine the universal SVG prompt, the relevant diagram-type prompt, and the final visual review prompt.
+   - Choose a layout archetype from [references/layout-archetypes.md](references/layout-archetypes.md) before rendering; do not place nodes before the dominant direction is fixed.
    - Prefer `python3 scripts/build_prompt.py <diagram-type> --source-file source.txt --title "Title"` when source material is in a file or long enough that manual prompt assembly is error-prone.
    - If the request fits multiple diagram types, choose the type that makes the relationships easiest to scan.
 4. Generate an SVG file:
@@ -103,7 +104,7 @@ Produce diagrams that are useful after import into a whiteboard:
 
 Use these defaults unless the user or source material indicates otherwise:
 
-- Architecture diagrams: left-to-right flow from users or entry points to services, data stores, and external dependencies.
+- Architecture diagrams: one dominant reading direction, usually left-right or split-band; do not interleave online and offline paths in one row.
 - Component diagrams: layered layout from interface/adapters to domain/core to infrastructure.
 - Deployment diagrams: outer-to-inner grouping from region/VPC/cluster/namespace to workloads and backing services.
 - Process diagrams: top-to-bottom or left-to-right numbered stages, with branches only where decisions are explicit.

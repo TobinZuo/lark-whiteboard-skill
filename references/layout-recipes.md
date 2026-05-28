@@ -2,6 +2,10 @@
 
 Use these numeric recipes to keep generated SVG diagrams polished and readable.
 
+## Layout Rule
+
+Before placing nodes, choose one layout archetype from [layout-archetypes.md](layout-archetypes.md) and keep it consistent throughout the diagram.
+
 ## Canvas
 
 - Default canvas: `1600 x 1000`.
@@ -59,11 +63,18 @@ Never reduce readable labels below 16 px. Simplify text or increase the canvas i
 
 ## Architecture Recipe
 
-- Use columns: actors, edge/API, compute/services, data/async, external.
-- Give each column a loose x-range and align node centers vertically.
-- Keep primary request/data flow left-to-right.
-- Put storage below or to the right of owning service, not floating far away.
+- Use one of these skeletons:
+  - left-right pipeline for request serving
+  - top-down stack for platform layers
+  - split-band for online plus offline paths
+  - hub-and-spoke for central coordinator designs
+- Give each semantic tier a fixed band or column.
+- Keep primary request/data flow on one clearly visible axis.
+- Put storage below or beside owning service, not floating far away.
+- Keep external dependencies outside the core band.
 - Use one primary colored path; keep secondary dependencies gray.
+- If the diagram has both online and offline logic, separate them into bands or rows instead of mixing them.
+- Keep monitoring, alerting, analytics, and ops feedback loops in a separate side band.
 
 ## Component Recipe
 
@@ -86,6 +97,13 @@ Never reduce readable labels below 16 px. Simplify text or increase the canvas i
 - Use parallel rows for batch and streaming flows.
 - Put topic/table/file names on edges only if labels remain readable.
 - Use storage-shaped cards consistently for queues, tables, buckets, warehouses, and caches.
+
+## General Spacing Rule
+
+- Keep unrelated bands at least 96 px apart.
+- Keep nodes in the same band aligned to a shared baseline or centerline.
+- If labels start to overlap, widen the canvas before shrinking text.
+- Prefer more whitespace over denser placement.
 
 ## Flowchart Recipe
 

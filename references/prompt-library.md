@@ -34,6 +34,9 @@ Visual quality requirements:
 - Use visual hierarchy: large title, clear section labels, readable node labels, lighter secondary annotations.
 - Wrap long labels manually using <tspan>; never let text overflow its container.
 - Prefer fewer, well-spaced elements over a dense diagram.
+- Before drawing, choose one layout archetype and use it for the whole diagram.
+- Reserve semantic bands or columns first, then place nodes inside those bands.
+- Do not mix left-right and top-down flows on the same visual spine.
 ```
 
 ## Architecture Prompt
@@ -44,11 +47,15 @@ Use for service maps, platform diagrams, system dependencies, data flow, and inf
 Diagram type: architecture.
 
 Layout:
-- Use a left-to-right flow: user/client entry points, edge/API layer, services, data/queue/storage, external dependencies.
+- Use one dominant layout archetype. For most architecture diagrams, prefer `left-right pipeline` or `split-band`.
+- Reserve explicit bands before placing nodes: entry, edge/API, services, data/storage, external/ops.
+- Use a left-to-right flow for the core path unless the source clearly suggests a different dominant direction.
 - Group related components into lightly stroked zones only when grouping is explicit or strongly implied.
 - Place databases and queues near the services that own or use them.
 - Use solid arrows for request/data flow and dashed arrows only for optional, async, or control paths that are explicit in the source.
 - Keep every node on a grid; avoid diagonal spaghetti lines.
+- If the source contains both online and offline logic, separate them into bands or rows instead of interleaving them.
+- Keep monitoring, alerting, analytics, and ops feedback loops in a separate side band.
 
 Styling:
 - Use rounded rectangles for services, cylinders or database-shaped groups for storage, small pills for external systems.
