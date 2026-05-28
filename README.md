@@ -1,10 +1,31 @@
 # lark-whiteboard-skill
 
-A Codex skill for generating clean SVG diagrams from user input, validating the SVG, and handing it off to a Lark or Feishu whiteboard integration.
+Create clear architecture diagrams, flowcharts, sequence diagrams, data flows, and other structured visuals for Lark or Feishu whiteboards.
+
+This skill helps you turn rough descriptions into diagrams that are ready to review, share, or publish into a document. It is useful when a conversation, design note, incident summary, or system description needs to become a visual artifact quickly.
+
+## What You Can Ask For
+
+- "Draw the architecture of our search engine."
+- "Turn this release process into a flowchart."
+- "Create a sequence diagram for login and token refresh."
+- "Make a data flow diagram from ingestion to warehouse to dashboard."
+- "Convert this schema description into an ER diagram."
+- "Generate a diagram I can put into a Feishu whiteboard."
+
+## What It Helps With
+
+- Clarifies messy system descriptions into a readable visual.
+- Chooses a diagram type that fits the request instead of making a generic box-and-arrow drawing.
+- Keeps labels, spacing, and arrows clean enough for whiteboard review.
+- Produces portable SVG files that can be reused outside Lark or Feishu.
+- Can publish a finished SVG into a Lark document whiteboard when your local Lark tools are configured.
+
+Supported diagram types include architecture, component, deployment topology, sequence, flowchart, process, swimlane, state machine, data flow, ERD, CI/CD pipeline, org chart, timeline, mind map, matrix, and funnel.
 
 ## Install
 
-Clone this repository into another Codex CLI's skills directory:
+Clone this repository into your Codex skills directory:
 
 ```bash
 git clone https://github.com/TobinZuo/lark-whiteboard-skill.git "${CODEX_HOME:-$HOME/.codex}/skills/lark-whiteboard-skill"
@@ -12,59 +33,29 @@ git clone https://github.com/TobinZuo/lark-whiteboard-skill.git "${CODEX_HOME:-$
 
 Restart Codex or reload skills so `lark-whiteboard-skill` is discoverable.
 
-Prerequisites for publishing into Lark:
+## Publishing To Lark Or Feishu
 
-- `lark-cli` installed and authenticated with document/whiteboard permissions.
-- Node.js and `npx` available so the skill can run `@larksuite/whiteboard-cli`.
+SVG generation works without Lark setup.
 
-If you only want SVG generation, `lark-cli` is not required.
+To publish into a Lark document whiteboard, install and authenticate the Lark tooling used in your environment:
 
-## What it does
+- `lark-cli` with document and whiteboard permissions.
+- Node.js and `npx` so the whiteboard converter can run.
 
-- Turns common engineering diagrams into SVG: architecture, component, deployment topology, sequence, flowchart, swimlane, state machine, data flow, ERD, and CI/CD pipeline.
-- Selects a diagram-specific prompt from `references/prompt-library.md` so the layout is intentionally designed instead of generic.
-- Converts vague requests into a structured diagram brief before asking for SVG.
-- Validates generated SVG with `scripts/validate_svg.py`.
-- Hands the validated SVG to an available Lark or Feishu whiteboard skill or tool.
-- Redacts whiteboard tokens from publish output by default.
+If publishing is not configured, the skill still returns the SVG path so you can import or share it manually.
 
-This repository does not include Feishu authentication or board-writing API code. Those responsibilities are delegated to your existing whiteboard integration.
+## Developer Checks
 
-## Quick check
+Validate an example SVG:
 
 ```bash
 python3 scripts/validate_svg.py examples/simple-flow.svg
 ```
 
-Build a diagram-specific prompt:
+Preview a publish plan without writing to Lark:
 
 ```bash
-python3 scripts/build_prompt.py architecture --source "Client calls API, API calls worker, worker writes database." --title "Example Architecture"
+python3 scripts/publish_svg_to_lark_doc.py --svg examples/system-architecture.svg --title "System Architecture" --dry-run
 ```
 
-Publish a validated SVG into a new Lark document whiteboard:
-
-```bash
-python3 scripts/publish_svg_to_lark_doc.py --svg diagram.svg --title "Example Architecture"
-```
-
-Preview the publish plan without writing to Lark:
-
-```bash
-python3 scripts/publish_svg_to_lark_doc.py --svg diagram.svg --title "Example Architecture" --dry-run
-```
-
-For agent integration, see `references/agent-contract.md`.
-
-## Examples
-
-- `examples/system-architecture.svg`
-- `examples/api-sequence.svg`
-- `examples/er-diagram.svg`
-- `examples/simple-flow.svg`
-
-Validate all examples:
-
-```bash
-for f in examples/*.svg; do python3 scripts/validate_svg.py "$f"; done
-```
+For agent integration details, see `references/agent-contract.md`.
