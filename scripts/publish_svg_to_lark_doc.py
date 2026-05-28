@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -25,6 +26,26 @@ def run(cmd: list[str], *, input_text: str | None = None) -> subprocess.Complete
         sys.stderr.write(proc.stderr)
         raise RuntimeError(f"command failed: {' '.join(cmd)}")
     return proc
+
+
+def require_command(name: str) -> str:
+    path = shutil.which(name)
+    if not path:
+        raise RuntimeError(f"missing required command: {name}")
+    return path
+
+
+def preflight(svg_path: Path, needs_lark: bool) -> dict[str, object]:
+    checks: dict[str, object] = {
+        "svg_exists": svg_path.exists(),
+        "svg_path": str(svg_path),
+        "npx": require_command("npx"),
+    }
+    if needs_lark:
+        checks["lark_cli"] = require_command("lark-cli")
+    if not svg_path.exists():
+        raise RuntimeError(f"missing svg: {svg_path}")
+    return checks
 
 
 def load_json_output(text: str) -> dict:
@@ -137,6 +158,12 @@ def update_whiteboard(token: str, openapi_path: Path, idempotent_token: str) -> 
     )
 
 
+def masked_token(token: str) -> str:
+    if len(token) <= 8:
+        return "<redacted>"
+    return f"{token[:4]}...{token[-4:]}"
+
+
 def export_preview(token: str, out_dir: Path) -> Path:
     out_dir.mkdir(parents=True, exist_ok=True)
     proc = run(
@@ -167,10 +194,13 @@ def main() -> int:
     parser.add_argument("--output-dir", type=Path, default=Path("data/publish"))
     parser.add_argument("--dry-run", action="store_true", help="validate only, do not write to Lark")
     parser.add_argument("--idempotent-token", help="custom idempotent token")
+    parser.add_argument("--include-token", action="store_true", help="include the real whiteboard token in JSON output")
     args = parser.parse_args()
 
-    if not args.svg.exists():
-        print(f"missing svg: {args.svg}", file=sys.stderr)
+    try:
+        checks = preflight(args.svg, needs_lark=not args.dry_run)
+    except RuntimeError as exc:
+        print(json.dumps({"ok": False, "stage": "preflight", "error": str(exc)}, ensure_ascii=False), file=sys.stderr)
         return 2
 
     with tempfile.TemporaryDirectory() as tmp:
@@ -191,7 +221,20 @@ def main() -> int:
         )
 
         if args.dry_run:
-            print(json.dumps({"ok": True, "dry_run": True, "svg": str(args.svg)}, ensure_ascii=False))
+            print(
+                json.dumps(
+                    {
+                        "ok": True,
+                        "dry_run": True,
+                        "stage": "preflight",
+                        "checks": checks,
+                        "planned_mode": "update_doc" if args.doc_url else "create_doc",
+                        "title": args.title,
+                        "doc_url": args.doc_url,
+                    },
+                    ensure_ascii=False,
+                )
+            )
             return 0
 
         if args.doc_url:
@@ -213,7 +256,8 @@ def main() -> int:
                     "ok": True,
                     "doc_url": doc_url,
                     "document_id": doc_id,
-                    "whiteboard_token": token,
+                    "whiteboard_token": token if args.include_token else masked_token(token),
+                    "whiteboard_token_redacted": not args.include_token,
                     "openapi_path": str(openapi_path),
                     "preview_path": str(preview_path),
                 },

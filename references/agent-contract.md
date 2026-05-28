@@ -27,8 +27,10 @@ The skill should return:
 
 - `svg_path`
 - `validation_result`
+- `source_summary`
+- `publish_stage` when publishing is attempted
 - `doc_url` when published
-- `whiteboard_token` when available
+- `whiteboard_token` only when explicitly requested; otherwise return a redacted token
 - `preview_path` when published
 
 ## Reuse Rule
@@ -42,6 +44,8 @@ python3 scripts/publish_svg_to_lark_doc.py --svg <diagram.svg> --title "<title>"
 ```
 
 This keeps the generation step model-driven and the publish step deterministic.
+
+Use `publish_svg_to_lark_doc.py --dry-run` before a real publish when an agent needs to verify local dependencies or explain the planned write target.
 
 ## Installation For Another Codex CLI
 

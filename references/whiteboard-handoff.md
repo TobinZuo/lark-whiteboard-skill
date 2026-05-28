@@ -9,16 +9,19 @@ When invoking a Lark or Feishu whiteboard skill or tool, provide:
 - `title`: short board title.
 - `mode`: prefer `editable-shapes` when supported; otherwise use `svg-import` or the closest supported SVG ingestion mode.
 - `source_summary`: one or two sentences describing what the SVG represents.
+- `validation_result`: the result from `scripts/validate_svg.py --json`, when available.
 
 ## Expected Downstream Behavior
 
 The whiteboard integration should:
 
 - Authenticate with Lark or Feishu using its own configured credentials.
+- Run or respect a preflight check before creating documents or mutating existing documents.
 - Create or update the target board.
 - Convert supported SVG shapes and text into whiteboard elements when possible.
 - Fall back to importing the SVG as a single visual object only when editable conversion is unavailable.
-- Return the final board URL or a clear failure reason.
+- Return stable JSON containing the final board URL or a clear failure stage and reason.
+- Redact sensitive whiteboard tokens unless the caller explicitly requests them for a trusted downstream step.
 
 ## Failure Handling
 

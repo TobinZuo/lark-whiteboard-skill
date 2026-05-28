@@ -21,6 +21,8 @@ This skill owns the SVG generation workflow. It does not own Feishu authenticati
    - Identify entities, relationships, direction, swimlanes, groups, sequence, and key labels.
    - Preserve user-provided names exactly.
    - Do not invent business facts, systems, owners, metrics, or dependencies.
+   - Write down the intended story in one sentence, then list the minimum nodes and edges needed to tell it.
+   - Separate online/request flow, offline/data flow, control flow, and operational feedback when they would otherwise crowd one diagram.
 3. Select the best diagram prompt:
    - Classify the request using [references/prompt-library.md](references/prompt-library.md).
    - Combine the universal SVG prompt, the relevant diagram-type prompt, and the final visual review prompt.
@@ -36,6 +38,7 @@ This skill owns the SVG generation workflow. It does not own Feishu authenticati
    - Run `python3 scripts/validate_svg.py path/to/diagram.svg`.
    - Inspect the SVG for visual quality before handoff; regenerate once if the layout is crowded, unbalanced, or unclear.
    - Fix validation errors before handoff.
+   - Prefer rerunning validation with `--json` when another agent or automation needs a stable result object.
 6. Hand off to the Lark or Feishu whiteboard integration:
    - Follow [references/whiteboard-handoff.md](references/whiteboard-handoff.md).
    - For a reusable agent flow, follow [references/agent-contract.md](references/agent-contract.md).
@@ -60,6 +63,17 @@ Expose this skill to other agents as a split workflow:
    ```
 
 Keep the model-driven part limited to SVG generation. Keep Lark document creation, SVG conversion, whiteboard update, and preview export in `scripts/publish_svg_to_lark_doc.py`.
+
+## MindAI-Inspired Lessons
+
+This skill intentionally stays local and transparent, but it should emulate the useful observable behavior of remote diagram generators:
+
+- Turn vague requests into a structured diagram brief before drawing.
+- Keep the generation artifact resumable: source request, prompt, SVG path, validation result, and publish result should be easy to pass between agents.
+- Treat SVG readiness as the first success milestone; publishing to Lark or Feishu is a separate step.
+- Return stable JSON from scripts when automation is involved.
+- Avoid exposing sensitive whiteboard tokens in user-facing output unless a downstream tool explicitly requires them.
+- Prefer explicit progress and failure messages over silent best-effort publishing.
 
 ## Prompt Selection
 

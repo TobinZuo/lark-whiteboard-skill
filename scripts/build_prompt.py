@@ -68,6 +68,27 @@ RECIPE_BY_SECTION = {
 COMMON_RECIPE_HEADINGS = ["Layout Rule", "Canvas", "Node Dimensions", "Spacing", "Palette", "Typography"]
 
 
+def build_diagram_brief(diagram_type: str, title: str, source: str) -> str:
+    return "\n".join(
+        [
+            "Structured diagram brief:",
+            f"- Title: {title}",
+            f"- Diagram type: {diagram_type}",
+            "- Goal: turn the source material into one clear, review-ready diagram.",
+            "- Audience: engineering and product reviewers who need to scan the system quickly.",
+            "- Source boundary: use only names, systems, dependencies, metrics, dates, and facts present in the source.",
+            "- Node extraction: identify the smallest set of entities, services, actors, stores, states, or stages needed to explain the request.",
+            "- Edge extraction: identify directed relationships, data movement, ownership, ordering, handoffs, retries, or dependencies explicitly present in the source.",
+            "- Layout plan: choose zones, lanes, layers, or columns before drawing; keep the main story on a single dominant reading path.",
+            "- Label plan: use concise labels; move details into secondary lines only when they clarify the diagram.",
+            "- Handoff expectation: produce self-contained SVG with editable text and predictable geometry for whiteboard import.",
+            "",
+            "Source material:",
+            source,
+        ]
+    )
+
+
 def extract_text_block(markdown: str, heading: str) -> str:
     pattern = re.compile(
         rf"^## {re.escape(heading)}\s*$.*?```text\n(.*?)\n```",
@@ -121,6 +142,7 @@ def build_prompt(diagram_type: str, source: str, title: str | None) -> str:
 
     title_text = title.strip() if title else "Untitled diagram"
     source_text = source.strip() if source else "[No source material provided. Ask the user for details before generating SVG.]"
+    diagram_brief = build_diagram_brief(normalized_type, title_text, source_text)
 
     return "\n\n".join(
         [
@@ -129,8 +151,7 @@ def build_prompt(diagram_type: str, source: str, title: str | None) -> str:
             "Layout archetypes and placement discipline:\n" + archetypes,
             "Layout recipes and numeric design constraints:\n" + recipes,
             review,
-            f"Diagram title:\n{title_text}",
-            "User source material:\n" + source_text,
+            diagram_brief,
         ]
     )
 
