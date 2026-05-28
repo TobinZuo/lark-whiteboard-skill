@@ -1,0 +1,4 @@
+interface:
+  display_name: "Lark Whiteboard SVG"
+  short_description: "Generate SVG diagrams for Lark Whiteboard"
+  default_prompt: "Create a Lark whiteboard diagram from my description."

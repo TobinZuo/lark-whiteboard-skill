@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="950" viewBox="0 0 1500 950">
+  <title>Commerce risk data model ER diagram</title>
+  <desc>An ER diagram for orders, risk decisions, users, devices, rules, model scores, actions, and review cases.</desc>
+  <defs>
+    <marker id="relArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M1 1 L9 5 L1 9 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect width="1500" height="950" fill="#ffffff"/>
+  <text x="72" y="72" font-family="Arial, Helvetica, sans-serif" font-size="36" font-weight="700" fill="#17202c">Commerce Risk Data Model</text>
+  <text x="72" y="104" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#4b5563">Core entities for risk decisions, scoring, actions, and manual review</text>
+
+  <g font-family="Arial, Helvetica, sans-serif">
+    <rect x="88" y="160" width="280" height="230" rx="12" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+    <rect x="88" y="160" width="280" height="48" rx="12" fill="#eef3ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="228" y="191" text-anchor="middle" font-size="17" font-weight="700" fill="#17202c">orders</text>
+    <text x="112" y="240" font-size="14" fill="#17202c">PK order_id</text>
+    <text x="112" y="272" font-size="14" fill="#17202c">FK user_id</text>
+    <text x="112" y="304" font-size="14" fill="#17202c">amount</text>
+    <text x="112" y="336" font-size="14" fill="#17202c">status</text>
+    <text x="112" y="368" font-size="14" fill="#17202c">created_at</text>
+
+    <rect x="430" y="160" width="280" height="230" rx="12" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+    <rect x="430" y="160" width="280" height="48" rx="12" fill="#eef3ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="570" y="191" text-anchor="middle" font-size="17" font-weight="700" fill="#17202c">risk_decisions</text>
+    <text x="454" y="240" font-size="14" fill="#17202c">PK decision_id</text>
+    <text x="454" y="272" font-size="14" fill="#17202c">FK order_id</text>
+    <text x="454" y="304" font-size="14" fill="#17202c">decision</text>
+    <text x="454" y="336" font-size="14" fill="#17202c">reason_code</text>
+    <text x="454" y="368" font-size="14" fill="#17202c">created_at</text>
+
+    <rect x="772" y="160" width="280" height="230" rx="12" fill="#ffffff" stroke="#0f766e" stroke-width="2"/>
+    <rect x="772" y="160" width="280" height="48" rx="12" fill="#eaf7ee" stroke="#0f766e" stroke-width="2"/>
+    <text x="912" y="191" text-anchor="middle" font-size="17" font-weight="700" fill="#17202c">model_scores</text>
+    <text x="796" y="240" font-size="14" fill="#17202c">PK score_id</text>
+    <text x="796" y="272" font-size="14" fill="#17202c">FK decision_id</text>
+    <text x="796" y="304" font-size="14" fill="#17202c">model_name</text>
+    <text x="796" y="336" font-size="14" fill="#17202c">score</text>
+    <text x="796" y="368" font-size="14" fill="#17202c">feature_snapshot</text>
+
+    <rect x="1114" y="160" width="280" height="230" rx="12" fill="#ffffff" stroke="#b7791f" stroke-width="2"/>
+    <rect x="1114" y="160" width="280" height="48" rx="12" fill="#fff7e6" stroke="#b7791f" stroke-width="2"/>
+    <text x="1254" y="191" text-anchor="middle" font-size="17" font-weight="700" fill="#17202c">risk_actions</text>
+    <text x="1138" y="240" font-size="14" fill="#17202c">PK action_id</text>
+    <text x="1138" y="272" font-size="14" fill="#17202c">FK decision_id</text>
+    <text x="1138" y="304" font-size="14" fill="#17202c">action_type</text>
+    <text x="1138" y="336" font-size="14" fill="#17202c">operator</text>
+    <text x="1138" y="368" font-size="14" fill="#17202c">executed_at</text>
+
+    <rect x="88" y="520" width="280" height="230" rx="12" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+    <rect x="88" y="520" width="280" height="48" rx="12" fill="#eef3ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="228" y="551" text-anchor="middle" font-size="17" font-weight="700" fill="#17202c">users</text>
+    <text x="112" y="600" font-size="14" fill="#17202c">PK user_id</text>
+    <text x="112" y="632" font-size="14" fill="#17202c">country</text>
+    <text x="112" y="664" font-size="14" fill="#17202c">account_age_days</text>
+    <text x="112" y="696" font-size="14" fill="#17202c">risk_tier</text>
+    <text x="112" y="728" font-size="14" fill="#17202c">created_at</text>
+
+    <rect x="430" y="520" width="280" height="230" rx="12" fill="#ffffff" stroke="#2563eb" stroke-width="2"/>
+    <rect x="430" y="520" width="280" height="48" rx="12" fill="#eef3ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="570" y="551" text-anchor="middle" font-size="17" font-weight="700" fill="#17202c">devices</text>
+    <text x="454" y="600" font-size="14" fill="#17202c">PK device_id</text>
+    <text x="454" y="632" font-size="14" fill="#17202c">FK user_id</text>
+    <text x="454" y="664" font-size="14" fill="#17202c">fingerprint</text>
+    <text x="454" y="696" font-size="14" fill="#17202c">trust_score</text>
+    <text x="454" y="728" font-size="14" fill="#17202c">last_seen_at</text>
+
+    <rect x="772" y="520" width="280" height="230" rx="12" fill="#ffffff" stroke="#b7791f" stroke-width="2"/>
+    <rect x="772" y="520" width="280" height="48" rx="12" fill="#fff7e6" stroke="#b7791f" stroke-width="2"/>
+    <text x="912" y="551" text-anchor="middle" font-size="17" font-weight="700" fill="#17202c">rules</text>
+    <text x="796" y="600" font-size="14" fill="#17202c">PK rule_id</text>
+    <text x="796" y="632" font-size="14" fill="#17202c">rule_name</text>
+    <text x="796" y="664" font-size="14" fill="#17202c">version</text>
+    <text x="796" y="696" font-size="14" fill="#17202c">status</text>
+    <text x="796" y="728" font-size="14" fill="#17202c">updated_at</text>
+
+    <rect x="1114" y="520" width="280" height="230" rx="12" fill="#ffffff" stroke="#b42318" stroke-width="2"/>
+    <rect x="1114" y="520" width="280" height="48" rx="12" fill="#fdebec" stroke="#b42318" stroke-width="2"/>
+    <text x="1254" y="551" text-anchor="middle" font-size="17" font-weight="700" fill="#17202c">review_cases</text>
+    <text x="1138" y="600" font-size="14" fill="#17202c">PK case_id</text>
+    <text x="1138" y="632" font-size="14" fill="#17202c">FK decision_id</text>
+    <text x="1138" y="664" font-size="14" fill="#17202c">assignee</text>
+    <text x="1138" y="696" font-size="14" fill="#17202c">case_status</text>
+    <text x="1138" y="728" font-size="14" fill="#17202c">resolved_at</text>
+  </g>
+
+  <g font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#4b5563" stroke="#64748b" stroke-width="2" fill-opacity="1">
+    <path d="M368 275 H430" fill="none" marker-end="url(#relArrow)"/>
+    <text x="399" y="260" text-anchor="middle">1:N</text>
+    <path d="M710 275 H772" fill="none" marker-end="url(#relArrow)"/>
+    <text x="741" y="260" text-anchor="middle">1:N</text>
+    <path d="M710 330 H1114" fill="none" marker-end="url(#relArrow)"/>
+    <text x="912" y="315" text-anchor="middle">1:N</text>
+    <path d="M228 390 V520" fill="none" marker-end="url(#relArrow)"/>
+    <text x="250" y="462">N:1</text>
+    <path d="M368 635 H430" fill="none" marker-end="url(#relArrow)"/>
+    <text x="399" y="620" text-anchor="middle">1:N</text>
+    <path d="M912 520 V390 H650" fill="none" marker-end="url(#relArrow)"/>
+    <text x="810" y="430">rules influence decisions</text>
+    <path d="M1254 390 V520" fill="none" marker-end="url(#relArrow)"/>
+    <text x="1276" y="462">manual review</text>
+  </g>
+</svg>

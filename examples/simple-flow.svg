@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720">
+  <title>Simple request flow</title>
+  <desc>A three-step flow from user request to validated SVG and whiteboard handoff.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2 2 L10 6 L2 10 Z" fill="#2f3a4a"/>
+    </marker>
+  </defs>
+  <rect x="80" y="260" width="260" height="120" rx="16" fill="#f7f1dc" stroke="#9f7e2f" stroke-width="3"/>
+  <text x="210" y="315" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="28" fill="#17202c">User input</text>
+  <text x="210" y="350" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#3f4b5b">diagram request</text>
+  <rect x="470" y="260" width="260" height="120" rx="16" fill="#e7f2ff" stroke="#376a9f" stroke-width="3"/>
+  <text x="600" y="315" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="28" fill="#17202c">Generate SVG</text>
+  <text x="600" y="350" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#3f4b5b">validate locally</text>
+  <rect x="860" y="260" width="260" height="120" rx="16" fill="#e9f6ea" stroke="#3f7b4d" stroke-width="3"/>
+  <text x="990" y="315" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="28" fill="#17202c">Whiteboard</text>
+  <text x="990" y="350" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#3f4b5b">publish via tool</text>
+  <line x1="350" y1="320" x2="455" y2="320" stroke="#2f3a4a" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="740" y1="320" x2="845" y2="320" stroke="#2f3a4a" stroke-width="4" marker-end="url(#arrow)"/>
+</svg>
