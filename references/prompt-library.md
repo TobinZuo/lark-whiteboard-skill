@@ -29,7 +29,10 @@ Visual quality requirements:
 - Make the diagram clean, balanced, and professional enough for an executive or engineering review.
 - Use a structured layout grid with consistent alignment.
 - Use generous whitespace and avoid crowding.
-- Keep arrows short and route them around labels.
+- Keep arrows short, intentional, and routed around labels.
+- Prefer orthogonal connectors with horizontal and vertical segments for structured diagrams. Use curved connectors only for compact retries, loops, or state-machine transitions where a curve improves clarity.
+- Route feedback, monitoring, exception, and safety paths along the edge of the main layout band instead of drawing long sweeping lines through the middle of the canvas.
+- Avoid connector spaghetti: do not let lines cross important nodes, run behind text, or take decorative detours.
 - Use no more than 5 semantic colors, with high contrast and a neutral background.
 - Use visual hierarchy: large title, clear section labels, readable node labels, lighter secondary annotations.
 - Wrap long labels manually using <tspan>; never let text overflow its container.
@@ -405,6 +408,8 @@ Review the SVG as a visual design artifact:
 - Can every label be read at normal whiteboard zoom?
 - Does any text overflow a node or collide with arrows?
 - Are arrows routed cleanly without crossing important labels?
+- Do feedback, exception, monitoring, or safety paths follow clear edge routes instead of sweeping through the main diagram?
+- Are any connectors visually surprising, overly curved, or harder to follow than a simple orthogonal route?
 - Is the main story visible within 5 seconds?
 - Does the palette use semantic contrast rather than random colors?
 - Would this still look clean if imported onto a whiteboard canvas?

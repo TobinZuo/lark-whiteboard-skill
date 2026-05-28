@@ -33,6 +33,15 @@ Keep repeated nodes exactly the same size within a diagram type unless the user 
 - Text padding inside nodes: at least 16 px left/right and 14 px top/bottom.
 - Arrow clearance from text: at least 18 px.
 
+## Connector Routing
+
+- Use orthogonal connectors by default: horizontal and vertical segments with clear bend points.
+- Keep primary flow connectors short and aligned to the main reading direction.
+- Route feedback, exception, monitoring, safety, and rollback paths along the outer edge of the relevant band or lane.
+- Avoid long sweeping curves across the canvas; use curves only for compact loops, retries, or state transitions where the curve makes the relationship clearer.
+- Do not run connectors through node bodies, over labels, behind section headers, or through unrelated bands.
+- When several connectors return to an earlier stage, use a shared return rail near the band edge instead of separate crossing arcs.
+
 ## Palette
 
 Use a restrained, semantic palette. Pick only colors that encode meaning:
