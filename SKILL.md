@@ -34,7 +34,11 @@ This skill owns the SVG generation workflow. It does not own Feishu authenticati
    - Prefer `python3 scripts/build_prompt.py <diagram-type> --source-file source.txt --title "Title"` when source material is in a file or long enough that manual prompt assembly is error-prone. If using visible SVG references, add `--reference-svg path/to/reference.svg`.
    - If the request fits multiple diagram types, choose the type that makes the relationships easiest to scan.
 4. Generate an SVG file:
-   - Prefer simple vector primitives: `rect`, `circle`, `ellipse`, `line`, `polyline`, `path`, `text`, and `g`.
+   - **Choose generation method by complexity:**
+     - Simple diagrams (< 10 nodes, linear flow, no alignment constraints): generate SVG directly.
+     - Complex diagrams (swimlanes, multi-branch, grid alignment, polar/ring layout, architecture layers): use **code-gen** — write a Node.js layout script per [references/code-gen-layout.md](references/code-gen-layout.md), execute it with `node diagram.gen.cjs`, and use the output SVG.
+   - For direct SVG: prefer simple vector primitives: `rect`, `circle`, `ellipse`, `line`, `polyline`, `path`, `text`, and `g`.
+   - For code-gen: follow the three-phase pattern (data → layout → render) and use algorithmic coordinate computation. Never hand-write coordinates for complex diagrams.
    - Use deterministic layout with a clear `viewBox`, explicit dimensions, and readable text.
    - Follow [references/svg-guidelines.md](references/svg-guidelines.md).
    - Follow [references/layout-recipes.md](references/layout-recipes.md) for canvas size, node dimensions, spacing, typography, and palettes.
