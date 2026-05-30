@@ -18,16 +18,20 @@ This skill owns the SVG generation workflow. It does not own Feishu authenticati
    - Diagram type, audience, and source material, if the request is ambiguous.
    - Whether text should remain editable on the board, if the downstream tool supports both editable objects and flat image import.
 2. Convert the user's input into a concise diagram plan:
+   - Follow [references/content-enrichment.md](references/content-enrichment.md) for the pre-generation checklist, domain knowledge injection, node text structure, and per-type expansion rules.
    - Identify entities, relationships, direction, swimlanes, groups, sequence, and key labels.
    - Preserve user-provided names exactly.
-   - Do not invent business facts, systems, owners, metrics, or dependencies.
+   - When the user's request is sparse or vague, enrich with domain-standard components, tech stacks, and structural decisions per the content enrichment guide. Do not invent business facts, owners, or dependencies not implied by the domain.
    - Write down the intended story in one sentence, then list the minimum nodes and edges needed to tell it.
    - Separate online/request flow, offline/data flow, control flow, and operational feedback when they would otherwise crowd one diagram.
+   - Reserve semantic space before drawing nodes: panels, lanes, columns, nested boundaries, or lifecycle rows should make the diagram's structure obvious before details are added.
+   - If the user provides an existing SVG or screenshot as a quality reference, extract only visible output traits such as layout, grouping, spacing, line semantics, labels, and palette. Follow [references/reference-svg-patterns.md](references/reference-svg-patterns.md); do not infer or copy hidden prompts, private APIs, credentials, or internal traces.
 3. Select the best diagram prompt:
    - Classify the request using [references/prompt-library.md](references/prompt-library.md).
    - Combine the universal SVG prompt, the relevant diagram-type prompt, and the final visual review prompt.
    - Choose a layout archetype from [references/layout-archetypes.md](references/layout-archetypes.md) before rendering; do not place nodes before the dominant direction is fixed.
-   - Prefer `python3 scripts/build_prompt.py <diagram-type> --source-file source.txt --title "Title"` when source material is in a file or long enough that manual prompt assembly is error-prone.
+   - Apply the matching distilled layout pattern from [references/distilled-layout-patterns.md](references/distilled-layout-patterns.md), especially for split-band architecture, exception-row workflows, nested deployment, data stage matrices, swimlane handoffs, and lifecycle state rows.
+   - Prefer `python3 scripts/build_prompt.py <diagram-type> --source-file source.txt --title "Title"` when source material is in a file or long enough that manual prompt assembly is error-prone. If using visible SVG references, add `--reference-svg path/to/reference.svg`.
    - If the request fits multiple diagram types, choose the type that makes the relationships easiest to scan.
 4. Generate an SVG file:
    - Prefer simple vector primitives: `rect`, `circle`, `ellipse`, `line`, `polyline`, `path`, `text`, and `g`.
@@ -36,6 +40,7 @@ This skill owns the SVG generation workflow. It does not own Feishu authenticati
    - Follow [references/layout-recipes.md](references/layout-recipes.md) for canvas size, node dimensions, spacing, typography, and palettes.
 5. Validate the SVG:
    - Run `python3 scripts/validate_svg.py path/to/diagram.svg`.
+   - Run `python3 scripts/score_svg_layout.py path/to/diagram.svg` for non-trivial diagrams, especially when matching a reference SVG, and resolve high-severity warnings before handoff.
    - Inspect the SVG for visual quality before handoff; regenerate once if the layout is crowded, unbalanced, or unclear.
    - Fix validation errors before handoff.
    - Prefer rerunning validation with `--json` when another agent or automation needs a stable result object.
@@ -53,9 +58,14 @@ Expose this skill to other agents as a split workflow:
    ```bash
    python3 scripts/build_prompt.py architecture --source-file request.txt --title "System Architecture"
    ```
+   With a visible SVG reference:
+   ```bash
+   python3 scripts/build_prompt.py architecture --source-file request.txt --title "System Architecture" --reference-svg reference.svg
+   ```
 2. SVG validation:
    ```bash
    python3 scripts/validate_svg.py diagram.svg
+   python3 scripts/score_svg_layout.py diagram.svg
    ```
 3. Lark document publishing:
    ```bash
@@ -69,6 +79,8 @@ Keep the model-driven part limited to SVG generation. Keep Lark document creatio
 This skill intentionally stays local, transparent, and portable. Keep the generation workflow explicit:
 
 - Turn vague requests into a structured diagram brief before drawing.
+- When using an existing diagram as a reference, extract reusable visible design patterns rather than copying the artifact one-for-one.
+- Treat strong reference outputs as pattern sources, not facts: distill container structure, flow separation, connector semantics, typography, and palette; keep all labels and relationships grounded in the user's source.
 - Keep the generation artifact resumable: source request, prompt, SVG path, validation result, and publish result should be easy to pass between agents.
 - Treat SVG readiness as the first success milestone; publishing to Lark or Feishu is a separate step.
 - Return stable JSON from scripts when automation is involved.
@@ -113,6 +125,7 @@ Produce diagrams that are useful after import into a whiteboard:
 - Avoid decorative backgrounds, gradients, shadows, and dense illustration.
 - Leave generous margins and whitespace. A smaller, clearer diagram is better than a crowded one.
 - Use a clear type scale: title 40-52 px, group labels 24-32 px, node labels 20-28 px, supporting labels 16-20 px.
+- Use [references/visual-quality-rubric.md](references/visual-quality-rubric.md) as the review checklist for complex diagrams or when a user asks to improve quality.
 
 ## Diagram Defaults
 
